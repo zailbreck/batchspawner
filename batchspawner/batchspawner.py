@@ -743,13 +743,16 @@ echo "jupyterhub-singleuser ended gracefully"
     def parse_job_id(self, output):
         # make sure jobid is really a number
         try:
-            # use only last line to circumvent slurm bug
+            # Slurm Sbatch Output is : Submitted batch job 19
             output = output.splitlines()[-1]
-            id = output.split(";")[0]
+            # Split to ['Submitted','batch','job','19']
+            # Get last index value
+            id = output.split(" ")[0] 
             int(id)
         except Exception as e:
             self.log.error("SlurmSpawner unable to parse job ID from text: " + output)
             raise e
+        # Return 19
         return id
 
 
